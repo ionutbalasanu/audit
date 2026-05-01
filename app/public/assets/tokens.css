@@ -1,0 +1,101 @@
+:root {
+  /* ─── Existing workspace variables (preserved for report/workspace CSS) ─── */
+  --bg-page: #FAF7F2;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-sunken: #F5F0E8;
+  --bg-soft: #f5f7fa;
+  --bg-dark: #0F1C2E;
+
+  --text-primary: #0F1C2E;
+  --text-secondary: #475468;
+  --text-tertiary: #6B7A90;
+  --text-muted: #9AA6B8;
+
+  --accent: #F97316;
+  --accent-hover: #EA580C;
+  --accent-muted: #FFF4E6;
+  --accent-border: rgba(249, 115, 22, 0.22);
+
+  --line-subtle: rgba(15, 28, 46, 0.08);
+  --line-strong: rgba(15, 28, 46, 0.14);
+
+  --critical: #DC2626;
+  --critical-bg: rgba(220, 38, 38, 0.10);
+  --high: #F97316;
+  --high-bg: #FFF4E6;
+  --medium: #F59E0B;
+  --medium-bg: rgba(245, 158, 11, 0.12);
+  --low: #6B7A90;
+  --low-bg: #FAF7F2;
+  --success: #16A34A;
+  --success-bg: rgba(22, 163, 74, 0.10);
+  --warning: #F59E0B;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.03);
+  --shadow-form: 0 2px 8px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --shadow-modal: 0 20px 50px rgba(15, 23, 42, 0.16), 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-soft: 0 24px 60px rgba(15, 23, 42, 0.08);
+  --shadow-coral: 0 4px 14px rgba(249, 115, 22, 0.25);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  --container: 1120px;
+  --container-narrow: 760px;
+  --header-height: 64px;
+  --header-offset: 64px;
+
+  /* ─── New design system variables ─── */
+  --bg-0: #FAF7F2;
+  --bg-1: #FFFFFF;
+  --bg-warm: #FFF4E6;
+  --bg-peach: #FFE8D1;
+
+  --border: rgba(15, 28, 46, 0.08);
+  --border-strong: rgba(15, 28, 46, 0.14);
+  --border-accent: rgba(249, 115, 22, 0.35);
+
+  --text: #0F1C2E;
+  --text-2: #1A2540;
+  --text-dim: #475468;
+  --text-mute: #6B7A90;
+  --text-faint: #9AA6B8;
+
+  --accent-2: #EA580C;
+  --accent-soft: rgba(249, 115, 22, 0.10);
+  --accent-softer: rgba(249, 115, 22, 0.06);
+  --accent-glow: rgba(249, 115, 22, 0.28);
+
+  --ok: #16A34A;
+  --warn: #F59E0B;
+  --danger: #DC2626;
+  --info: #0EA5E9;
+  --ok-soft: rgba(22, 163, 74, 0.10);
+  --warn-soft: rgba(245, 158, 11, 0.12);
+  --danger-soft: rgba(220, 38, 38, 0.10);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+  --r-2xl: 32px;
+
+  --shadow-xs: 0 1px 2px rgba(15, 28, 46, 0.04);
+  --shadow-sm: 0 2px 8px rgba(15, 28, 46, 0.05);
+  --shadow-md: 0 8px 28px -8px rgba(15, 28, 46, 0.12);
+  --shadow-lg: 0 24px 64px -16px rgba(15, 28, 46, 0.16);
+  --shadow-orange: 0 14px 40px -12px rgba(249, 115, 22, 0.45);
+
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
+  --gutter: 28px;
+}

@@ -1,0 +1,113 @@
+export const TABS = ["overview", "issues", "plan", "technical", "share"];
+
+export const PROGRESS_STAGES = [
+  "Validam URL-ul si contextul...",
+  "Randăm HTML-ul; unele site-uri durează 10-30 secunde...",
+  "Calculam scorul si blocajele...",
+  "Pregătim recomandările și share state-ul...",
+];
+
+export const TECHNICAL_CATEGORIES = [
+  {
+    title: "Content & UX",
+    ids: [
+      "word_count_800",
+      "intro_mentions_topic",
+      "h1_single",
+      "headings_hierarchy",
+      "lists_tables",
+      "images_in_body",
+      "img_alt_ratio_80",
+      "lazyload_images",
+      "date_published",
+      "date_modified",
+      "author_visible_or_schema",
+    ],
+  },
+  {
+    title: "Structura & indexare",
+    ids: [
+      "indexable",
+      "canonical_present",
+      "canonical_valid",
+      "url_clean",
+      "internal_links_present",
+      "external_links_present",
+      "meta_robots_ok",
+      "html_valid",
+      "image_dimensions_defined",
+      "fonts_preload",
+      "cls_risky_elements",
+    ],
+  },
+  {
+    title: "Metadate & rich results",
+    ids: [
+      "title_length_ok",
+      "meta_description_ok",
+      "og_minimal",
+      "schema_article_recommended",
+      "faq_schema_present",
+      "schema_breadcrumbs",
+      "schema_image_required_fields",
+    ],
+  },
+  {
+    title: "Localizare RO",
+    ids: [
+      "lang_ro",
+      "og_locale_or_inLanguage_ro",
+      "date_format_ro",
+      "hreflang_pairs",
+      "local_tel_click",
+      "local_tel_prefix_local",
+      "local_address_visible",
+      "local_directions_link",
+      "local_opening_hours",
+      "local_schema_localbusiness",
+      "local_schema_postal",
+      "local_schema_tel",
+      "local_schema_geo",
+      "local_schema_sameas",
+      "local_schema_area",
+      "local_schema_rating",
+      "local_city_detected",
+      "local_city_in_title",
+      "local_city_in_h1",
+      "local_city_in_slug",
+      "local_city_in_intro",
+      "local_map_embed",
+      "local_alt_has_city",
+      "local_locator",
+      "local_whatsapp",
+    ],
+  },
+];
+
+export function createInitialState(config) {
+  return {
+    mode: config.initialMode === "workspace" ? "workspace" : "landing",
+    currentContext: "article",
+    pendingUrl: "",
+    currentReport: null,
+    activeTab: "overview",
+    reportUnlocked: Boolean(config.initialReportUnlocked),
+    sessionUnlocked: Boolean(config.initialSessionUnlocked),
+    siteAccess: null,
+    lastUnlockEmail: "",
+    issueFilter: "all",
+    technicalSearch: "",
+    showOnlyProblems: true,
+    emailSent: false,
+    leadSent: false,
+    leadSource: "workspace_help",
+    leadPrefill: "",
+    emailSourceOverride: "",
+    rehydrated: false,
+    timers: {
+      progress: null,
+      toast: null,
+      timeout: null,
+    },
+  };
+}
