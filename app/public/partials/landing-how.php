@@ -23,7 +23,7 @@ declare(strict_types=1);
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
         </div>
         <h3>Alege tipul paginii</h3>
-        <p>Pagină standard pentru majoritatea cazurilor. „Pagină locală" activează verificări în plus pentru Google Maps și Local Pack.</p>
+        <p>Pagină standard pentru majoritatea cazurilor. „Pagină locală" activează verificări în plus pentru telefon/adresă, hartă, LocalBusiness și oraș în zonele cheie.</p>
       </div>
       <div class="step-card">
         <div class="step-num">03</div>

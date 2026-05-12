@@ -5,7 +5,6 @@ final class ReportAccess
 {
     private const COOKIE_PREFIX = 'nova_audit_unlock_';
     private const COOKIE_TTL = 2592000;
-    private const SESSION_COOKIE = 'nova_audit_unlock_session';
 
     public static function isUnlocked(string $token): bool
     {
@@ -46,12 +45,6 @@ final class ReportAccess
     public static function hasSessionUnlock(): bool
     {
         return false;
-    }
-
-    public static function unlockSession(): void
-    {
-        // Session-wide unlocks are intentionally disabled; each report token must
-        // have its own signed cookie.
     }
 
     public static function unlock(string $token): bool
@@ -110,16 +103,6 @@ final class ReportAccess
         }
 
         return hash_hmac('sha256', 'email-access:' . $token, $key);
-    }
-
-    private static function sessionSignature(): string
-    {
-        $key = self::signingKey();
-        if ($key === null) {
-            return '';
-        }
-
-        return hash_hmac('sha256', 'session', $key);
     }
 
     private static function cookieOptions(): array

@@ -117,7 +117,7 @@ if ($path === '/api/render' && $method === 'POST') {
     $in = readJsonBody();
     $url = normalizeUrlInput((string)($in['url'] ?? ''));
     if ($url === null) {
-        json_out(['error' => 'URL invalid'], 400);
+        json_out(['error' => 'invalid_url'], 400);
     }
 
     try {
@@ -137,7 +137,7 @@ if ($path === '/api/score' && $method === 'POST') {
     $in = readJsonBody();
     $url = normalizeUrlInput((string)($in['url'] ?? ''));
     if ($url === null) {
-        json_out(['error' => 'URL invalid'], 400);
+        json_out(['error' => 'invalid_url'], 400);
     }
 
     $context = normalizeContext((string)($in['context'] ?? 'article'));
@@ -153,7 +153,7 @@ if ($path === '/api/score' && $method === 'POST') {
         'score:ip:' . $ip,
     ], ['error' => 'rate_limited', 'message' => 'Prea multe cereri astazi.']);
     enforceRateLimit($siteLimiter, [
-        'score:site:' . (SiteAuditAccess::siteKey($url) ?? hash('sha256', $url)),
+        'score:site:' . $ip . ':' . (SiteAuditAccess::siteKey($url) ?? hash('sha256', $url)),
     ], ['error' => 'rate_limited', 'message' => 'Prea multe cereri astazi.']);
 
     $baseAudit = analyzeUrl($url, $context, !empty($in['fresh']));
@@ -776,7 +776,13 @@ function analyzeUrl(string $url, string $context, bool $fresh = false): array
 
         return $response;
     } catch (\Throwable $e) {
-        error_log('Analyze URL failed: ' . $e->getMessage());
+        error_log(sprintf(
+            'Analyze URL failed: url=%s ctx=%s ip=%s err=%s',
+            $url,
+            $context,
+            clientIp(),
+            $e->getMessage()
+        ));
         return [
             'ok' => false,
             'error' => 'render_failed',
@@ -867,64 +873,6 @@ function saveEmailReportLead(
     } catch (\Throwable $e) {
         error_log('Email report lead save failed.');
         return false;
-    }
-}
-
-function subscribeNewsletter(string $email, string $firstName, bool $newsletterOptin, bool $consentTerms): array
-{
-    $wpUrl = (string) envget('WP_SUBSCRIBE_URL', '');
-    $wpTok = Config::sensitiveEnv('WP_SUBSCRIBE_TOKEN');
-    $wpList = auditMailpoetListName();
-    $wpInsecure = ((int) envget('WP_INSECURE', '0') === 1);
-
-    if ($wpUrl === '' || $wpTok === '') {
-        return ['skipped' => true, 'ok' => false, 'reason' => 'missing_config'];
-    }
-
-    try {
-        $wpClient = new WordpressClient($wpUrl, $wpTok, $wpInsecure);
-        $newsletter = new NewsletterService($wpClient, $wpList);
-
-        return $newsletter->subscribeIfConsented(
-            email: $email,
-            firstName: $firstName !== '' ? $firstName : null,
-            consentNewsletter: $newsletterOptin,
-            consentTerms: $consentTerms,
-            ip: clientIp()
-        );
-    } catch (\Throwable $e) {
-        return ['skipped' => false, 'ok' => false, 'reason' => 'request_failed'];
-    }
-}
-
-function subscribePlanList(string $email, string $firstName, bool $wantsPlan, bool $consentTerms): array
-{
-    $wpUrl = (string) envget('WP_SUBSCRIBE_URL', '');
-    $wpTok = Config::sensitiveEnv('WP_SUBSCRIBE_TOKEN');
-    $wpList = auditMailpoetListName();
-    $wpInsecure = ((int) envget('WP_INSECURE', '0') === 1);
-
-    if (!$wantsPlan || !$consentTerms) {
-        return ['skipped' => true, 'ok' => false, 'reason' => 'missing_consents'];
-    }
-
-    if ($wpUrl === '' || $wpTok === '') {
-        return ['skipped' => true, 'ok' => false, 'reason' => 'missing_config'];
-    }
-
-    try {
-        $wpClient = new WordpressClient($wpUrl, $wpTok, $wpInsecure);
-        $newsletter = new NewsletterService($wpClient, $wpList);
-
-        return $newsletter->subscribeIfConsented(
-            email: $email,
-            firstName: $firstName !== '' ? $firstName : null,
-            consentNewsletter: $wantsPlan,
-            consentTerms: $consentTerms,
-            ip: clientIp()
-        );
-    } catch (\Throwable $e) {
-        return ['skipped' => false, 'ok' => false, 'reason' => 'request_failed'];
     }
 }
 

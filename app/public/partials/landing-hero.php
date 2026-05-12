@@ -18,7 +18,7 @@ declare(strict_types=1);
         </h1>
 
         <p class="hero-lead">
-          Audit SEO gratuit cu 90+ verificări on-page. Primești scor, listă cu probleme prioritare și pașii concreți de rezolvare. Fără cont, fără card.
+          Audit SEO gratuit cu 50+ verificări on-page. Primești scor, listă cu probleme prioritare și pașii concreți de rezolvare. Fără cont, fără card.
         </p>
       </div>
 
@@ -26,29 +26,87 @@ declare(strict_types=1);
         <div class="audit-panel">
           <div class="panel-header">
             <div class="panel-title">Pornește auditul</div>
-            <div class="panel-kicker">90+ verificări · gratuit</div>
-          </div>
-
-          <div class="context-switch-shell">
-            <div class="tabs" role="radiogroup" aria-label="Tip audit" data-active="article">
-              <button
-                type="button"
-                class="tab active context-toggle"
-                data-type="article"
-                role="radio"
-                aria-checked="true"
-              >Pagină standard</button>
-              <button
-                type="button"
-                class="tab context-toggle"
-                data-type="local"
-                role="radio"
-                aria-checked="false"
-              >Pagină locală</button>
-            </div>
+            <div class="panel-kicker">50+ verificări · gratuit</div>
           </div>
 
           <form id="scoreForm" novalidate>
+            <fieldset class="audit-type-fieldset" data-active="article">
+              <legend class="audit-type-legend">
+                <span>Ce tip de audit dorești?</span>
+                <small>Selectează o singură opțiune.</small>
+              </legend>
+
+              <div class="audit-type-options">
+                <label class="audit-type-option active" for="auditTypeArticle">
+                  <input
+                    id="auditTypeArticle"
+                    class="context-toggle"
+                    name="audit_type"
+                    type="radio"
+                    value="article"
+                    data-type="article"
+                    aria-describedby="auditTypeArticleTip"
+                    checked
+                  >
+                  <span class="audit-type-icon" aria-hidden="true">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="9"/>
+                      <path d="M3 12h18"/>
+                      <path d="M12 3c2.25 2.46 3.45 5.46 3.45 9S14.25 18.54 12 21"/>
+                      <path d="M12 3c-2.25 2.46-3.45 5.46-3.45 9S9.75 18.54 12 21"/>
+                    </svg>
+                  </span>
+                  <span class="audit-type-copy">
+                    <span class="audit-type-title-row">
+                      <strong>Pagină generală</strong>
+                    </span>
+                    <span id="auditTypeArticleTip" class="audit-type-tooltip" role="tooltip">
+                      Analizăm conținutul, structura, meta-tagurile și indexarea paginii.
+                    </span>
+                  </span>
+                  <span class="audit-type-status" aria-hidden="true">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m5 12 4 4L19 6"/>
+                    </svg>
+                  </span>
+                </label>
+
+                <label
+                  class="audit-type-option"
+                  for="auditTypeLocal"
+                >
+                  <input
+                    id="auditTypeLocal"
+                    class="context-toggle"
+                    name="audit_type"
+                    type="radio"
+                    value="local"
+                    data-type="local"
+                    aria-describedby="auditTypeLocalTip"
+                  >
+                  <span class="audit-type-icon" aria-hidden="true">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 5.52-8 11-8 11s-8-5.48-8-11a8 8 0 1 1 16 0Z"/>
+                      <circle cx="12" cy="10" r="2.6"/>
+                    </svg>
+                  </span>
+                  <span class="audit-type-copy">
+                    <span class="audit-type-title-row">
+                      <strong>Pagină locală</strong>
+                    </span>
+                    <span id="auditTypeLocalTip" class="audit-type-tooltip" role="tooltip">
+                      Verificăm telefon/adresă vizibile, link sau hartă Google Maps, schema LocalBusiness, rating în schema și orașul în zonele cheie.
+                    </span>
+                  </span>
+                  <span class="audit-type-status" aria-hidden="true">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m5 12 4 4L19 6"/>
+                    </svg>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
             <div class="url-input-wrap">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
@@ -66,8 +124,8 @@ declare(strict_types=1);
                 required
                 class="url-input"
               >
-              <button class="btn btn-primary" type="submit">
-                Vreau auditul gratuit
+              <button id="auditSubmitButton" class="btn btn-primary" type="submit">
+                Pornește auditul paginii generale
               </button>
             </div>
 
@@ -75,7 +133,7 @@ declare(strict_types=1);
 
             <div class="panel-note">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
-              <span id="contextHint">Auditul standard analizează on-page, structură și indexare. Dacă pagina țintește un oraș, alege „Pagină locală" pentru verificări Google Maps / Local Pack.</span>
+              <span id="contextHint">Auditul standard analizează on-page, structură și indexare. Dacă pagina țintește un oraș, alege „Pagină locală" pentru telefon/adresă, hartă și semnale locale on-page.</span>
             </div>
           </form>
 

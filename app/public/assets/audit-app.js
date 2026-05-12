@@ -107,8 +107,10 @@ const dom = {
   urlInput: document.getElementById("urlInput"),
   urlError: document.getElementById("urlError"),
   scoreForm: document.getElementById("scoreForm"),
+  auditSubmitButton: document.getElementById("auditSubmitButton"),
   contextHint: document.getElementById("contextHint"),
   contextButtons: Array.from(document.querySelectorAll(".context-toggle[data-type]")),
+  auditTypeOptions: Array.from(document.querySelectorAll(".audit-type-option")),
   openSharePrimary: document.getElementById("openSharePrimary"),
   openSharePrimaryLabel: document.getElementById("openSharePrimaryLabel"),
   openHelpPrimary: document.getElementById("openHelpPrimary"),
@@ -324,7 +326,7 @@ function goToLanding() {
 
 function setContext(nextContext) {
   state.currentContext = nextContext === "local" ? "local" : "article";
-  renderContextToggle(dom.contextButtons, dom.contextHint, state.currentContext);
+  renderContextToggle(dom.contextButtons, dom.contextHint, state.currentContext, dom.auditSubmitButton);
 }
 
 function showToast(message) {
@@ -982,34 +984,64 @@ function renderAuditState(payload) {
   dom.workspaceMetaNote.textContent = "";
   dom.workspaceSource.textContent = payload.message || "Nu am putut finaliza analiza automată.";
 
-  const isRateLimited = payload?.error === "rate_limited";
-  const isSiteLimit = payload?.error === "site_audit_limit_reached";
-  const isMissing = payload?.error === "report_not_found";
+  const errorCode = payload?.error;
+  const isRateLimited = errorCode === "rate_limited";
+  const isSiteLimit = errorCode === "site_audit_limit_reached";
+  const isMissing = errorCode === "report_not_found";
+  // Accept both new snake_case and legacy "URL invalid" for backward compat during deploy.
+  const isInvalidUrl = errorCode === "invalid_url" || errorCode === "URL invalid";
+  const isRenderFailed = errorCode === "render_failed";
+
+  let title;
+  let body;
+  let actions;
+
+  if (isSiteLimit) {
+    title = "Ai atins limita pentru acest site.";
+    body = payload?.message || "Ai rulat deja audituri pentru acest site astăzi. Poți retrimite ultimul raport pe email sau poți cere o revizuire manuală.";
+    actions = [
+      { label: "Solicită audit manual", action: "help", kind: "button-primary", source: "site_limit" },
+      { label: "Analizează alt site", action: "landing", kind: "button-ghost" },
+    ];
+  } else if (isRateLimited) {
+    title = "Ai ajuns la limita de audituri pentru azi.";
+    body = payload?.message || "Limita zilnică e gândită să prevină abuzul. Revino mâine pentru audituri noi sau cere o revizuire manuală.";
+    actions = [
+      { label: "Solicită audit manual", action: "help", kind: "button-primary", source: "rate_limit" },
+      { label: "Analizează alt URL mâine", action: "landing", kind: "button-ghost" },
+    ];
+  } else if (isMissing) {
+    title = "Raportul nu mai este disponibil.";
+    body = payload?.message || "Linkul raportului a expirat. Poți rula un audit nou pe orice URL.";
+    actions = [{ label: "Rulează un audit nou", action: "landing", kind: "button-primary" }];
+  } else if (isInvalidUrl) {
+    title = "URL-ul introdus nu poate fi analizat.";
+    body = "Verifică să fie un domeniu public valid și accesibil. Exemplu: https://numefirma.ro. Nu sunt acceptate adrese locale, IP-uri private sau site-uri inaccesibile public.";
+    actions = [
+      { label: "Încearcă alt URL", action: "landing", kind: "button-primary" },
+      { label: "Cere ajutor", action: "help", kind: "button-ghost", source: "invalid_url" },
+    ];
+  } else if (isRenderFailed) {
+    title = "Nu am putut accesa această pagină.";
+    body = "Site-ul are protecții anti-bot, e prea lent sau a returnat o eroare. Pentru un audit complet pe acest URL, putem analiza manual.";
+    actions = [
+      { label: "Cere audit manual gratuit", action: "help", kind: "button-primary", source: "render_failed" },
+      { label: "Analizează alt URL", action: "landing", kind: "button-ghost" },
+    ];
+  } else {
+    title = "Analiza automată nu a putut fi finalizată.";
+    body = payload?.message || "A apărut o problemă neașteptată. Poți relua auditul sau poți cere audit manual.";
+    actions = [
+      { label: "Solicită audit manual", action: "help", kind: "button-primary", source: "manual_audit" },
+      { label: "Analizează alt URL", action: "landing", kind: "button-ghost" },
+    ];
+  }
+
   renderStateCard(dom, {
     tone: isRateLimited || isSiteLimit ? "warning" : isMissing ? "neutral" : "danger",
-    title: isSiteLimit
-      ? "Ai atins limita pentru acest site."
-      : isRateLimited
-      ? "Ai ajuns la limita de audituri pentru azi."
-      : isMissing
-        ? "Raportul nu mai este disponibil."
-        : "Analiza automată nu a putut fi finalizată.",
-    body:
-      payload?.message ||
-      "Unele site-uri durează 10-30 secunde sau au protecții anti-bot. Poți relua auditul sau poți cere audit manual.",
-    actions: isSiteLimit
-      ? [
-          { label: "Solicită audit manual", action: "help", kind: "button-primary", source: "site_limit" },
-          { label: "Analizează alt site", action: "landing", kind: "button-ghost" },
-        ]
-      : isMissing
-      ? [{ label: "Rulează un audit nou", action: "landing", kind: "button-primary" }]
-      : isRateLimited
-      ? [{ label: "Analizează alt URL mâine", action: "landing", kind: "button-ghost" }]
-      : [
-          { label: "Solicită audit manual", action: "help", kind: "button-primary", source: "manual_audit" },
-          { label: "Analizează alt URL", action: "landing", kind: "button-ghost" },
-        ],
+    title,
+    body,
+    actions,
   });
 }
 
@@ -1715,7 +1747,20 @@ function bindEvents() {
   dom.reportContactForm?.addEventListener("submit", handleReportContactSubmit);
 
   dom.contextButtons.forEach((button) => {
-    button.addEventListener("click", () => setContext(button.dataset.type));
+    const eventName = button.matches?.('input[type="radio"]') ? "change" : "click";
+    button.addEventListener(eventName, () => {
+      if (button.matches?.('input[type="radio"]') && !button.checked) return;
+      setContext(button.dataset.type);
+    });
+  });
+
+  dom.auditTypeOptions.forEach((option) => {
+    option.addEventListener("pointerdown", () => {
+      option.classList.add("tooltip-suppressed");
+    });
+    option.addEventListener("mouseleave", () => {
+      option.classList.remove("tooltip-suppressed");
+    });
   });
 
   dom.openSharePrimary?.addEventListener("click", handleShareAction);

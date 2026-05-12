@@ -636,16 +636,6 @@ final class EmailRenderer
         return implode(PHP_EOL, $lines);
     }
 
-    public static function renderHtml(string $url, array $data): string
-    {
-        return self::renderReportHtml($url, $data);
-    }
-
-    public static function renderText(string $url, array $data): string
-    {
-        return self::renderReportText($url, $data);
-    }
-
     private static function buildReportModel(string $url, array $snapshot): array
     {
         $score = (array)($snapshot['score'] ?? []);

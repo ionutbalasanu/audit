@@ -27,7 +27,7 @@ declare(strict_types=1);
     <div class="proof-item">
       <div class="proof-icon" aria-hidden="true">⚡</div>
       <div>
-        <strong>47 de verificări</strong>
+        <strong><?= count(Advice::definitions()) ?> de verificări</strong>
         <span>On-page, tehnic, performanță și Local SEO - totul dintr-o analiză</span>
       </div>
     </div>

@@ -9,7 +9,7 @@ declare(strict_types=1);
         Pentru pagini cu intenție locală
       </div>
       <h2>Audit SEO local</h2>
-      <p>Dacă pagina ta țintește un oraș - „stomatologie Iași", „service auto București", „cabinet avocat Cluj" - modul „Pagină locală" adaugă verificări specifice pentru Google Maps și Local Pack.</p>
+      <p>Dacă pagina ta țintește un oraș - „stomatologie Iași", „service auto București", „cabinet avocat Cluj" - modul „Pagină locală" adaugă verificări on-page pentru hartă/link de direcții, schema LocalBusiness, telefon/adresă și semnale de oraș.</p>
     </div>
 
     <div class="info-card local-signals-card">

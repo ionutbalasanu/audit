@@ -109,7 +109,7 @@ final class RenderService
                 CURLOPT_FOLLOWLOCATION => false,
                 CURLOPT_CONNECTTIMEOUT => 10,
                 CURLOPT_TIMEOUT => 20,
-                CURLOPT_USERAGENT => 'Novaweb-SEO-Checker/1.0 (+https://novaweb.ro)',
+                CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; NovawebAuditBot/1.0; +https://novaweb.ro/audit-bot)',
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_SSL_VERIFYHOST => 2,
                 CURLOPT_HEADER => true,
@@ -151,7 +151,7 @@ final class RenderService
             'http' => [
                 'method' => 'GET',
                 'timeout' => 20,
-                'header' => "User-Agent: Novaweb-SEO-Checker/1.0\r\nAccept: text/html,*/*;q=0.8\r\n",
+                'header' => "User-Agent: Mozilla/5.0 (compatible; NovawebAuditBot/1.0; +https://novaweb.ro/audit-bot)\r\nAccept: text/html,*/*;q=0.8\r\n",
             ],
         ]);
         $body = @file_get_contents($safeUrl, false, $ctx);

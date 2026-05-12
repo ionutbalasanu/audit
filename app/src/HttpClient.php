@@ -73,7 +73,7 @@ final class HttpClient
                 CURLOPT_FOLLOWLOCATION => false,
                 CURLOPT_TIMEOUT => (int)($options['timeout'] ?? 15),
                 CURLOPT_CONNECTTIMEOUT => (int)($options['connect_timeout'] ?? 10),
-                CURLOPT_USERAGENT => 'Novaweb-SEO-Checker/1.0 (+https://novaweb.ro)',
+                CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; NovawebAuditBot/1.0; +https://novaweb.ro/audit-bot)',
                 CURLOPT_HEADER => true,
                 CURLOPT_SSL_VERIFYPEER => true,
                 CURLOPT_SSL_VERIFYHOST => 2,

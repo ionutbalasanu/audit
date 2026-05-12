@@ -16,12 +16,6 @@ export function setFeedback(element, text = "", tone = "neutral") {
   element.dataset.tone = tone;
 }
 
-export function buildShareLink(toolUrl, token) {
-  if (!token) return "";
-  const separator = toolUrl.includes("?") ? "&" : "?";
-  return `${toolUrl}${separator}report=${encodeURIComponent(token)}#workspaceShell`;
-}
-
 export function buildLeadMessage(report, app, focus = "") {
   if (!report) return focus || "";
 

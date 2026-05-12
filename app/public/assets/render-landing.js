@@ -9,21 +9,44 @@ export function syncSurfaceMode(elements, mode) {
   }
 }
 
-export function renderContextToggle(buttons, hintElement, context) {
-  const switchGroup = buttons[0]?.closest(".tabs");
+const CONTEXT_COPY = {
+  article: {
+    hint: "Pagina generală analizează on-page, structură, meta-taguri și indexare.",
+    submit: "Pornește auditul paginii generale",
+  },
+  local: {
+    hint: "Pagina locală include verificări on-page pentru oraș, telefon/adresă, link sau hartă Maps, rating în schema și LocalBusiness.",
+    submit: "Pornește auditul paginii locale",
+  },
+};
+
+export function renderContextToggle(buttons, hintElement, context, submitButton = null) {
+  const activeContext = context === "local" ? "local" : "article";
+  const switchGroup = buttons[0]?.closest(".audit-type-fieldset, .tabs");
   if (switchGroup) {
-    switchGroup.dataset.active = context === "local" ? "local" : "article";
+    switchGroup.dataset.active = activeContext;
   }
 
   buttons.forEach((button) => {
-    const active = button.dataset.type === context;
+    const active = button.dataset.type === activeContext;
+    const isNativeRadio = button.matches?.('input[type="radio"]');
+
     button.classList.toggle("active", active);
-    button.setAttribute("aria-checked", active ? "true" : "false");
+    button.closest(".audit-type-option")?.classList.toggle("active", active);
+
+    if (isNativeRadio) {
+      button.checked = active;
+      button.removeAttribute("aria-checked");
+    } else {
+      button.setAttribute("aria-checked", active ? "true" : "false");
+    }
   });
 
-  if (!hintElement) return;
-  hintElement.textContent =
-    context === "local"
-      ? "Auditul local include verificari pentru oras, NAP, schema LocalBusiness si semnale geografice."
-      : "Auditul standard analizează on-page, structură și indexare. Dacă pagina țintește un oraș, alege „Pagină locală\" pentru verificări Google Maps / Local Pack.";
+  const copy = CONTEXT_COPY[activeContext];
+  if (hintElement) {
+    hintElement.textContent = copy.hint;
+  }
+  if (submitButton) {
+    submitButton.textContent = copy.submit;
+  }
 }

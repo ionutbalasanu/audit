@@ -26,18 +26,18 @@ final class CloudflareClient
         $strategies = [
             // 1) Safe & rapid: domcontentloaded + mic timeout suplimentar
             [
-                'gotoOptions' => ['waitUntil' => 'domcontentloaded', 'timeout' => 20000],
-                'waitFor'     => ['type' => 'timeout', 'ms' => 1200],
+                'gotoOptions' => ['waitUntil' => 'domcontentloaded', 'timeout' => 30000],
+                'waitFor'     => ['type' => 'timeout', 'ms' => 1500],
             ],
             // 2) load (unele site-uri nu își pun niciun selector util)
             [
-                'gotoOptions' => ['waitUntil' => 'load', 'timeout' => 25000],
-                'waitFor'     => ['type' => 'timeout', 'ms' => 800],
+                'gotoOptions' => ['waitUntil' => 'load', 'timeout' => 35000],
+                'waitFor'     => ['type' => 'timeout', 'ms' => 1000],
             ],
             // 3) networkidle (ultimul fallback)
             [
-                'gotoOptions' => ['waitUntil' => 'networkidle', 'timeout' => 30000],
-                'waitFor'     => ['type' => 'timeout', 'ms' => 400],
+                'gotoOptions' => ['waitUntil' => 'networkidle', 'timeout' => 40000],
+                'waitFor'     => ['type' => 'timeout', 'ms' => 500],
             ],
         ];
 
@@ -94,7 +94,7 @@ final class CloudflareClient
             ],
             CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_UNICODE),
             CURLOPT_CONNECTTIMEOUT => 15,
-            CURLOPT_TIMEOUT        => 35,
+            CURLOPT_TIMEOUT        => 45,
         ]);
 
         $raw = curl_exec($ch);

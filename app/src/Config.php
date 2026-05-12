@@ -119,7 +119,7 @@ final class Config
 
     public static function toolDescription(): string
     {
-        return 'Introdu URL-ul, primești în 60 de secunde un audit SEO complet: 90+ verificări on-page, problemele prioritare și pașii de rezolvare. Fără cont, fără card. Raport pe email opțional.';
+        return 'Introdu URL-ul, primești în 60 de secunde un audit SEO complet: 50+ verificări on-page, problemele prioritare și pașii de rezolvare. Fără cont, fără card. Raport pe email opțional.';
     }
 
     public static function serviceCatalog(): array
@@ -229,7 +229,7 @@ final class Config
             ],
             [
                 'question' => 'Pot folosi auditul și pentru pagini locale?',
-                'answer' => 'Da. Alege „Pagină locală" înainte de a introduce URL-ul. Adaugă verificări pentru Google Maps și Local Pack: schema LocalBusiness, orașul în titluri, NAP vizibil, etc.',
+                'answer' => 'Da. Alege „Pagină locală" înainte de a introduce URL-ul. Adaugă verificări pentru semnale locale on-page: schema LocalBusiness, orașul în titluri, telefon/adresă vizibile, link sau hartă etc.',
             ],
             [
                 'question' => 'De ce e util să las emailul?',
